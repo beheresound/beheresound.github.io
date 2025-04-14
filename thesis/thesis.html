@@ -14,9 +14,17 @@
 <img src="./soundbath.jpg">
 <p>
   <center>
+    <em>Dr. Teresa Nakra, faculty advisor<br>
+      The School of Humanities, Arts, and Social Sciences<br>
+      Stevens Institute of Technology</em>
+<br>
     <b><p>Abstract</p></b>
   </center>
-  <p>Editing...</p>
+  <p><em>
+    Simulating the Internal Sacred Sound
+  </em> is an auditory-vibrational experience that introduces the audience to a meditative sound installation. The project assigns electroencephalogram (EEG) data to MIDI parameters in real-time; software interprets MIDI data from a structured meditation period to trigger pre-recorded musical elements, “translating” the internal experience into the physical world. Brain wave data is filtered into four categories (beta, alpha, theta, and delta waves) that are mapped to symbolic musical effects based on specific characteristics such as attention, relaxation, and mental interiorization, driven by a single meditator. 
+    <br><br>The purpose of this project is to use electrophysiology as a medium to paint a picture of the internal sacred sounds – the subtle sounds of the astral body and cosmic vibration - utilizing the brain as paint, the EEG and network programming as the paintbrush, and surround-sound speakers as the canvas. In this project, electrical signals of the brain, trained and directed by scientific meditation, influence musical effects, creating a neurofeedback loop for immersive meditation. With deepest reverence to Yoga, the ancient metaphysical system of which this simulation is guided, this project will work to bridge the divide between planes of consciousness and demonstrate the synergism between science and spirituality. 
+    </p>
 
   <p><center><b><p>Introduction</p></b></center></p>
   <p>In late January 2025 I very briefly heard the sounds of the muladhara
@@ -80,31 +88,120 @@
   Gurus.  </p>
 
   <p><center><b><p>Electrophysiology</p></b></center></p>
-  <p>Editing...
+  <p>Electrophysiology is a branch of physiology pertaining to the electrical recording techniques and measurements of biological properties in the nervous system. One common modality of this study is the evaluation of brain activity known as electroencephalography (EEG). In this study, neural oscillations of the brain are recorded with electrodes placed along the scalp and measured as voltage fluctuations. EEG is an area of active research, and the understanding of brain activity is still in development.  
+    <br><br>An EEG displays patterns of electrical activity with an approximate range of frequencies between 1 and 30 cycles per second (Hz) and an approximate range of amplitudes between 1 and 100 microvolts (μV). These frequencies are divided into four main groups: 
+    <br><br> Beta waves: neural oscillations in the frequency range of 12-30Hz. 
+    <br><br> Alpha waves: neural oscillations in the frequency range of 8-12Hz. 
+    <br><br> Theta waves: neural oscillations in the frequency range of 4-8Hz.
+    <br><br> Delta waves: neural oscillations in the frequency range of 1-4Hz.
+    <br><br> Each group of neural oscillations are commonly associated with different states of consciousness and brain activity such as: 
+    <br><br> Beta waves are associated with alertness and wakefulness, most common in normal waking consciousness.
+    <br><br> Alpha waves are associated with relaxation and calmness.
+    <br><br> Theta waves are associated with deep relaxation, creativity, and dreaming. 
+    <br><br> Delta waves, the longest and slowest, are associated with deep sleep and unconsciousness.
+    
   </ul>
 
   <p><center><b><p>g.Tec</p></b></center></p>
-  <p>Editing...<br><br>
+  <p>Analysis of the brain’s electrical signals requires the use of a Brain Computer Interface (BCI). I had the wonderful opportunity to experiment with the g.Tec BCI system for this project. Following is a quick walk-through of the system’s various functions and capabilities.
+    <br><br>The first step is a biosignal amplifier which connects via USB to the computer for software interaction. The amplifier communicates with a wireless EEG system for signal processing, in this case the g.Nautilus Research Wearable EEG Headset: a 32-channel wireless EEG which uses gel-based EEG electrodes. The g.Tec Active Electrode System uses active gel-based electrodes (g.SCARABEO Active Electrodes) with a small form factor to support high-density recordings.  
+    <br><br>For software components, g.Tec’s BCI environment makes use of the High-Speed Online Processing environment in Simulink for real-time signal acquisition. The device driver provides access to sampling frequency, digital I/O, bandpass and notch filtering, visualization, and file storage, detailed further in the programming section below.<br><br>
 
   <p><center><b><p>Programming</p></b></center></p>
-  <p>Editing...
+  <p>The technical aspects of this project are three-fold.  
+   <br><br>1. EEG & Matlab 
+   <br><br>2. Python 
+   <br><br>3. Max & Ableton 
+   <br><br>The sections below describe each of these components in detail.
+    
   </ol>
 
   <p><center><b><p>EEG and Matlab</p></b></center></p>
-  <p>Editing...</p>
+  <p>The g.Tec software package includes plenty of helpful tools within Matlab to make the best use of the EEG. I used Matlab’s Simulink, a block diagram programming environment, to visualize the design of my code. 
+    <br><br>Step 1: My research space in the Kidde Building is right next to the mechanical room. I had to remove the 50Hz hum that was causing some noise issues by using a notch filter. 
+    <br><br>Step 2: The different brain wave groups originate and are most concentrated in unique areas of the brain. To best capture a full picture of the brain, I chose to use 16 of the gel-based electrodes in the g.Nautilus positioned to capture activity in the frontal (beta), occipital (alpha), temporal (theta), and parietal (delta) lobes. I organized the specific electrodes with Demux, a method by which multiple signals are combined into one signal over a shared medium. Each of these were sent to a bandpass filter to organize the brain waves.  
+    <br><br>Step 3: Each bandpass filter is sent to a Barlow filter, a g.Tec tool which inputs EEG data and outputs the mean amplitude and mean frequency.  
+    <br><br> Step 4: I averaged the electrodes (2 for each lobe and 8 for the full picture of the brain) and sent them to a scope to visualize the raw data. One scope displays the mean frequency of each brain wave, a second scope displays the mean amplitude of each brain wave, and a third displays the mean frequency and amplitude of overall brain activity.  
+    <br><br> Step 5: Finally, I bussed the 8 outputs to Lab Streaming Layer (LSL), an overlay network for real-time exchange of data series between applications. See figure 1 below:
+    <br><br> Fig. 1 Simulink.
+    <br><br><img src="./aprilmatlab.png"> </p>
 
   <p><center><b><p>Python</p></b></center></p>
-  <p>Editing...
+  <p>I owe exemplary acknowledgements to my wonderful friend and programming wizard Zachary Rosario for his indispensable expertise in designing the python code required to make this project a reality. See the code, licensing, and installation process for EEG to MIDI on Zach’s Github. The code is designed to collect data from an EEG stream, process that data, and send it over a network as MIDI values (0-127). MIDI is the computer-based language of electronic music, used as a communication protocol and digital interface for a wide variety of applications. Additionally, the python program visualizes the data in real time using plots.  
+    <br><br>Some constants and adjustable parameters include maximum amplitudes for each brain wave and a smooth step conversion. A smooth step function is a mathematical equation which receives a real number and smoothly interpolates it, using a Hermite polynomial, between 0 and 1. These two functions can be modified to balance the normalization of the data into reliable 7-bit values between 0 and 127.  
+    <br><br> The main function: The program looks for an EEG stream using pylsl, a Python interface to the Lab Streaming Layer written by Christian Kothe (University of California San Diego) and managed by Chadwick Boulay, who offered valuable advice throughout the process of this project. The code creates an inlet and client setup to make connections to the EEG stream and send data via UDP (User Datagram Protocol) and an Ethernet cable. A Real-Time Data Loop continuously reads the data, processing the mean amplitudes and frequency, and smooths the data using the smooth step function. The data is stored and visualized in real time with a plot. An OSC (Open Sound Control) bundle is created to package the data for use in Max.  
+    <br><br> The function of the Python program is to read the brain wave data sent by LSL, process and convert it into MIDI (0-127), and send that data to Max for the next steps.  
+    
 
   <p><center><b><p>Max and Ableton</p></b></center></p>
-  <p>Editing...</p>
+  <p>In Max, a udpreceive object captures the Open Sound Control (OSC) package from the Python program. The OSC is then unpacked and utilized with Odot, a set of externals and language developed by Adrian Freed and John MacCallum at the Center for New Music and Audio Technologies (CNMAT) at UC Berkeley. The o.select patch separates the data into two sets of four brain waves as designated in Python (one for mean frequency and one for mean amplitude), as well as the mean frequency and amplitude of the overall brain, which are then displayed with o.display and “routed” to integer values. O.route does this by stripping off a portion of the address hierarchy, in this case, the text preceding the number value. The data is next patched to a slider, which outputs data from a range of 0-127 for MIDI application. Finally, ctlout sends the continuous controller data to Ableton, the chosen DAW (Digital Audio Workstation) for mapping. A DAW is an organized application software used for recording, editing, producing, and mixing audio files. Ableton was used to record the live sounds used in this project (described below), categorize and organize audio files, and apply MIDI mapping to different effects. 
+  </p>
 
   <p><center><b><p>Sound Bath Meditation</p></b></center></p>
-  <p>Editing...
+  <p>The performance aspect of this project is based on the concept of sound baths, a modern variation of an ancient Indian metaphysical system called Nada yoga.  
+    <br><br>Sound bath meditation is an element of restorative yoga that works to “bathe” the experiencer in waves of sound with instruments such as gongs, singing bowls, percussion, chimes, rattles, tuning forks, and the human voice itself. In her dissertation Sounds of Umbra and Light: Contemporary Sound Bath Practices in New York City, Gracelaine Osborne defines sound baths as “a collective and individual somatic listening event, where a facilitator uses a variety of instruments… as a focal point leading participants through a sonic and vibrational experience that is considered to be therapeutic, spiritual, meditative, musical, or contemplative in nature” (7). Osborne describes how “the rules of relationship between performer and audience melt, divisions between logical and intuitive thinking dissolve, and spiritual practice absorbs itself into artistic practice” (9). Occasionally, practitioners will lead the experiencers through a guided meditation alongside the instrumentation. Sound baths usually consist of a “performative practice” with emphasis placed “not on melodic content but on playing instruments that produce drones and focus on relatively simple rhythms, such as a pulsing heartbeat rhythm…[allowing] for a focused presence of harmonic overtones to be perceived and the potential for a trance state to be induced” (7). 
+    <br><br>The goal of this project's performance aspect is to manipulate pre-recorded “sound bath” elements with the brain during meditation to induce a therapeutic and meditative environment for the audience. Originally, the music was designed to follow the fluctuations of my consciousness during meditation to create a simulation of the internal experience. However, a conversation with Jason Snell in early April recontextualized my goals. Jason Snell is a meditator, programmer, and electronic musician who currently teaches at NYU Tisch School of the Arts and conducts musical neurofeedback research. In his thesis “Ecstasy & Dissolution,” Jason discovered a scientific method for guiding himself and others into transcendent ecstatic states with music and electrophysiology, characterized by theta brain wave activity. Through our conversation, I received the inspiration to take this project one step further; instead of attempting to only simulate the internal sacred sounds, this project now attempts to stimulate them. This is done by inducing a feedback loop in which deeper relaxation by the meditator is reflected in the music, promoting theta activity and giving space for the internal sacred sounds to manifest in the individual consciousness of the meditator and audience members.
 
-  <p><center><b><p>Future Implications</p></b></center></p>
-  <p>Editing...</p>
-<p><br>
+    <p><center><b><p>Recording with Rachel</p></b></center></p>
+    <p>I spent a day at Rachel’s studio in Jersey City to record her sound bath instruments in their natural environment. I used 4 Tascam TM80’s in an X/Y pattern as well as a spaced pair in the back of the room to capture the unique reverb and tone of the space. Some recorded sounds include various pitched Tibetan singing bowls, crystal singing bowls, wooden chimes, an ocean drum, vocals (chanting mantra), miscellaneous percussion, and a gong. See figures 2 and 3 below:
+      <br><br>Fig. 2-3. Various sound bath instruments.
+      <br><br><img src="./rachel.jpg">
+      <br><br><img src="./whitebowls.jpg">
+      <br><br><img src="./tibetanbowls.jpg">
+    </p>
+    <p><center><b><p>Structure and MIDI Mapping</p></b></center></p>
+    <p>The performance segment of this project is structured around seven sections according to the seven sacred sounds as described by Madame Blavatsky. Thus, the recorded material is divided into 1) the nightingale, 2) silver cymbals, 3) ocean’s spirit, 4) vina, 5) flute, 6) thunder, and 7) symphony. These sounds are mapped to different brain waves according to their frequency range, perceived character, Jason Snell’s theory of “increasing simplicity,” and my own intuition as follows: 
+      <br><br>The nightingale – The sound bath is introduced with miscellaneous chimes and bird-like bells of various rhythms, representing the scattered “beta” mind of everyday life. This section also features the drone of a white crystal singing bowl, influenced by the frequency of the alpha waves as a reference for relaxation. 
+      <br><br>Silver cymbals – Tibetan bowls influenced by the theta waves are introduced, alongside chimes in the beta category. 
+      <br><br>Ocean’s spirit – The ocean drum, influenced by the theta waves, is introduced.  
+      <br><br>Vina – In this section, Rachel’s kalimba and voice can be heard as she sings Om Nama Shivaya, one of her favorite chants.  
+      <br><br>Flute – The white crystal singing bowls are reintroduced with variations in rhythm. 
+      <br><br>Thunder – The gong is introduced, according to the delta wave. 
+      <br><br>Symphony – Delta, theta, and alpha waves participate in this culminating dance of the elements. Rachel and I chant Om to close this section. See figures below.
+      <br><br>Fig. 4. Ableton.
+      <br><br><img src="./abletonapril.jpg">
+      <br><br>Fig. 5. Max patch.
+      <br><br><img src="./maxapril.jpg">
+      <br><br>For each of these sounds, fluctuations in the frequency of their corresponding brain waves control loudness. For example, as the delta wave shifts in concentration from 4Hz to 1Hz, signifying an increase of activity in the unconscious mind (sleep) [i.e. a shift from faster to slower neural firing], the loudness of the gong will increase, and vice versa. 
+      <br><br>Alongside frequency variation, amplitude variations are considered and applied to the loudness of test tones. Each test tone is a sine wave octave of C that plays throughout the entire performance. This adds a layer of consistency and demonstrates the power of each frequency band over time. Finally, the overall image of the brain (state of consciousness of the meditator) is reflected in both a low pass filter and reverb on the master bus. This is the true (generalized) image of consciousness; during meditation, the brain in waking consciousness (beta, 12-30Hz) transitions to a state of relaxation (alpha, 8-12Hz), and finally to the waking-dream state (theta, 4-8Hz). Additionally, the amplitude of the overall brain image is assigned to notes which trigger individual hits of Tibetan bowls.
+      </p>
+  <p><center><b><p>Environment</p></b></center></p>
+  <p>The chosen location for the performance was the Semia Lab at Stevens Institute of Technology to make use of the space’s surround sound capabilities and subwoofer. The different sounds described above are mapped to unique areas in the room according to their theoretical location in the brain, as can be seen in the graphic below: 
+    <br><br>Fig. 6. Semia Lab as the brain.
+    <br><br><img src="./SemiaLabBrain.jpg">
+    <br><br>Audience members are encouraged to lie down, get comfortable, close their eyes and invite their minds to relax. As the state of consciousness of the meditator transitions from beta-concentration to alpha-concentration to theta-concentration, the quality of the ambient sounds reflects this slow-down of neural firings, creating an effective neurofeedback loop for immersive meditation.
+    </p>
+  </p>
+  <p><center><b><p>Conclusion</p></b></center></p>
+  As described above, the process to record brain waves to manipulate an audio/vibrational environment currently requires a Brain Computer Interface, coding in Matlab to categorize and package the data, socket protocols to send the data, coding in Python to convert data into MIDI acceptable values (0-127) and Max patches to scale the data or retrieve “notes” to send to the DAW (Digital Audio Workstation) for mapping.
+<br><br>Future uses of this technology could include all in one “packages” such as a headset called a Brain-Controlled MIDI Interface (BCMI). This headset would have 4 electrodes, one each for the frontal lobe, occipital lobe, temporal lobe, and parietal lobe to capture beta, alpha, theta, and delta waves respectively. A user-friendly design would allow the user to press buttons to adjust parameters like sample rate while keeping all the wires and software under the hood. The device will connect via Bluetooth to a biosignal amplifier which can be plugged into a computer with USB. The amplifier will receive all signals and send them to your DAW of choice just like any MIDI controller. I envision this technology finding a place in the future as a beginner’s introduction to consciousness control. For example, a child can be given the BCMI as a fun way to learn meditation. The “Beginner’s Guide to Calmness” preset may be selected, which will slowly increase the sound of a gong as the meditator’s mind gradually transitions from beta-concentration to theta-concentration. Thus, variations in the depth of concentration will be quite obvious and easily controlled. This is only one example of the potential future applications of EEG, music, and consciousness control.  
+<br><br>More time training my brain in meditation and system testing for consistency is required to fully explore the goals of this project as stated in the abstract. A true “simulation of the internal sacred sound” requires many more years of meditation, as well as dedicated teams of neuroscientists, computer scientists, and metaphysicians. It is my goal and expectation that the future of science will openly explore metaphysics as a valid and useful area of research. The expansion of human consciousness beyond the limitations of the intellect awaits for all brave enough to “quiet all the way down, and lean way out over the edge.”
+<p>
+<b>
+    <center>
+      ॐ
+    </center>
+  </b>
+  <p><center><b><p>Bibliography</p></b></center></p>
+Anilkuma, Arayamparambil and Nayak, Chetan. “EEG Normal Waveforms.” National Center
+for Biotechnology Information, 2023. https://www.ncbi.nlm.nih.gov/books/NBK539805/
+<br><br>Blavatsky, H.P. “Fragment 1.” The Voice of the Silence. The Theosophical Society.
+https://www.theosociety.org/pasadena/voice/voice1.htm
+<br><br>Elverum, Phil. “I Heard Whales (I Think).” Night Palace. Elverum & Suns, 2025. Transcription
+of lyrics. https://genius.com/Mount-eerie-i-heard-whales-i-think-lyrics
+<br><br>Freed, Adrian and MacCallum, John. CNMAT odot. Center for New Music and Audio
+Technologies. GitHub repository. https://github.com/CNMAT/CNMAT-odot
+<br><br>g.Tec. https://www.gtec.at/ 2025.
+<br><br>Kothe, Christian. labstreaminglayer. GitHub repository.
+https://github.com/sccn/labstreaminglayer. 2018. 
+<br><br>Osborne, Gracelaine. Sounds of Umbra and Light: Contemporary Sound Bath Practices in New
+York City. New York University, PhD dissertation, 2021.
+https://www.proquest.com/openview/11ad9fb4f8562a7b734fe513dfec5921/1?pq-origsite=gscholar&cbl=18750&diss=y
+<br><br>Rosario, Zachary. EEG to MIDI. GitHub repository. https://github.com/zachjesus/EEG-To-Midi
+2025.
+<br><br>Simulink. MathWorks. https://www.mathworks.com/products/simulink.html. 2025. 
+<br><br>Snell, Jason. “Ecstasy & Dissolution.” NYU Interactive Media Arts Thesis.
+https://www.youtube.com/watch?v=4KA3ai0aWZA<br><br>
   <nav>
     <a href="../index.html">Home</a>
   </nav>
