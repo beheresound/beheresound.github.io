@@ -156,3 +156,15 @@ width: 0.8em;
 margin: 0 0.8em 0.2em -1.6em;
 vertical-align: middle;
 }
+html {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 12px;
+    max-width: 100%;
+  }
+}
